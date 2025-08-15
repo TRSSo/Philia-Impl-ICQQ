@@ -1,10 +1,12 @@
 import * as inquirer from "@inquirer/prompts"
 import icqq from "icqq"
+import type { HandleMap } from "philia/connect/common/type.js"
 import { makeLogger } from "philia/logger"
 import * as Common from "philia/project/project/common.js"
 import * as Philia from "philia/project/project/philia.js"
+import EventHandle from "philia/protocol/common/event.js"
 import { selectArray } from "philia/util/tui.js"
-import Event from "./event/index.js"
+import { API, Event } from "#convert"
 
 export interface IConfig extends Common.IConfig {
   name: "ICQQ"
@@ -18,13 +20,18 @@ export class Project extends Common.Project {
   declare config: IConfig
   client: icqq.Client
   philia: Philia.Project
+  handle: API
+  event: Event
+  event_handle: EventHandle
 
   constructor(config: IConfig) {
     super(config)
-    this.philia = new Philia.Project(config.philia)
     this.client = new icqq.Client({ data_dir: `data/${config.uin}`, ...config.config })
     this.client.logger = makeLogger("ICQQ")
-    for (const i in Event) this.client.on(i, Event[i as keyof typeof Event].bind(this))
+    this.event = new Event(this)
+    this.handle = new API(this)
+    this.philia = new Philia.Project(config.philia, this.handle as unknown as HandleMap)
+    this.event_handle = new EventHandle(this.philia)
   }
 
   static async createConfig(name: IConfig["name"]) {
@@ -55,7 +62,6 @@ export class Project extends Common.Project {
       const choose = await inquirer.select({
         message: "请选择要修改的配置项",
         choices: [
-          { value: "done", name: "✅  完成" } as const,
           ...selectArray(
             [
               ["uin", "QQ号"],
@@ -74,6 +80,7 @@ export class Project extends Common.Project {
               config.slider as string,
             ],
           ),
+          { value: "done", name: "✅  完成" } as const,
         ],
       })
 
@@ -93,18 +100,18 @@ export class Project extends Common.Project {
           break
         case "uin":
           config.uin = await inquirer.number({
-            message: "请输入QQ号",
+            message: "请输入QQ号:",
             required: true,
             min: 10000,
             max: 2 ** 32 - 1,
           })
           break
         case "passwd":
-          config.passwd = await inquirer.password({ message: "请输入密码" })
+          config.passwd = await inquirer.password({ message: "请输入密码:" })
           break
         case "slider":
           config.slider = await inquirer.input({
-            message: "请输入滑动验证代理",
+            message: "请输入滑动验证代理:",
             default: String(config.slider),
             required: true,
             validate(input) {
@@ -116,7 +123,6 @@ export class Project extends Common.Project {
               return true
             },
           })
-
           break
         case "done":
           return
@@ -124,12 +130,12 @@ export class Project extends Common.Project {
           const type = Project.edit_config_key.find(i => i[0] === choose)?.[2]
           if (type === "boolean") {
             config.config[choose] = (await inquirer.confirm({
-              message: `请输入 ${choose}：`,
+              message: `请输入 ${choose}:`,
               default: config.config[choose] as undefined,
             })) as unknown as undefined
           } else {
             const input = await (type === "string" ? inquirer.input : inquirer.number)({
-              message: `请输入 ${choose}：`,
+              message: `请输入 ${choose}:`,
               default: config.config[choose] as undefined,
             })
             if (input === "" || input === undefined) delete config.config[choose]

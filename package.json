@@ -9,18 +9,18 @@
   "scripts": {
     "lint": "oxlint -c ../../.oxlintrc.json --fix src && biome check --write src",
     "compile": "rm -rf lib/* && tsc",
-    "minify": "node ../../mod/oxc-minify lib",
+    "minify": "node ../../mod/minify lib",
     "build": "pnpm lint && pnpm compile && pnpm minify"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.1.4",
-    "@types/node": "^24.2.1",
-    "oxc-minify": "^0.81.0",
-    "oxlint": "^1.11.1",
+    "@biomejs/biome": "^2.2.0",
+    "@types/node": "^24.3.0",
+    "oxc-minify": "^0.82.1",
+    "oxlint": "^1.11.2",
     "typescript": "^5.9.2"
   },
   "dependencies": {
-    "icqq": "npm:@icqqjs/icqq",
+    "icqq": "npm:@icqqjs/icqq@^1.7.0",
     "philia": "workspace:^"
   },
   "imports": {
