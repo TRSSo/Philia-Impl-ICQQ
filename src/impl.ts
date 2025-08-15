@@ -26,7 +26,7 @@ export class Project extends Common.Project {
 
   constructor(config: IConfig) {
     super(config)
-    this.client = new icqq.Client({ data_dir: `data/${config.uin}`, ...config.config })
+    this.client = new icqq.Client({ data_dir: `Data/${config.uin}`, ...config.config })
     this.client.logger = makeLogger("ICQQ")
     this.event = new Event(this)
     this.handle = new API(this)

@@ -1,4 +1,5 @@
 import type icqq from "icqq"
+import pkg from "icqq/package.json" with { type: "json" }
 import type { API, Contact, Event, Message } from "philia/protocol/type"
 import type { Project as Impl } from "#impl.js"
 import * as MessageConverter from "./message.js"
@@ -12,6 +13,13 @@ function throwBool(name = "操作") {
 export type IAPI = API.API & API.IAPI<API.OICQ>
 export default class ICQQtoPhilia implements IAPI {
   constructor(public impl: Impl) {}
+
+  getVersion() {
+    return {
+      impl: { id: "QQ", name: "ICQQ", version: pkg.version },
+      proto: this.impl.client.apk,
+    }
+  }
 
   receiveEvent(
     { event }: API.Req<"receiveEvent">,
