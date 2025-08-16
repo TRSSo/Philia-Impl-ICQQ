@@ -10,7 +10,7 @@
     "lint": "oxlint -c ../../.oxlintrc.json --fix src && biome check --write src",
     "compile": "rm -rf lib/* && tsc",
     "minify": "node ../../mod/minify lib",
-    "build": "pnpm lint && pnpm compile && pnpm minify"
+    "build": "pnpm lint && { pnpm compile; pnpm minify; }"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.2.0",
@@ -20,7 +20,7 @@
     "typescript": "^5.9.2"
   },
   "dependencies": {
-    "icqq": "npm:@icqqjs/icqq@^1.7.0",
+    "icqq": "*",
     "philia": "workspace:^"
   },
   "imports": {
