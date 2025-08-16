@@ -1,0 +1,36 @@
+{
+  "name": "philia-impl-icqq",
+  "version": "0.0.1",
+  "description": "菲莉娅 ICQQ 实现端",
+  "license": "LGPL-3.0",
+  "author": "TimeRainStarSky",
+  "type": "module",
+  "main": "lib/main.js",
+  "scripts": {
+    "lint": "oxlint -c ../../.oxlintrc.json --fix src && biome check --write src",
+    "compile": "rm -rf lib/* && tsc",
+    "minify": "node ../../mod/minify lib",
+    "build": "pnpm lint && { pnpm compile; pnpm minify; }"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.2.0",
+    "@types/node": "^24.3.0",
+    "oxc-minify": "^0.82.1",
+    "oxlint": "^1.11.2",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "icqq": "*",
+    "philia": "workspace:^"
+  },
+  "imports": {
+    "#*": "./lib/*/index.js",
+    "#*.js": "./lib/*.js"
+  },
+  "exports": {
+    ".": "./lib/index.js",
+    "./*": "./lib/*/index.js",
+    "./*.js": "./lib/*.js",
+    "./package.json": "./package.json"
+  }
+}

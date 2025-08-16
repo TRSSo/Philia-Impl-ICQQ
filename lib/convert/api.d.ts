@@ -1,0 +1,110 @@
+import type icqq from "icqq";
+import type { API, Contact, Event, Message } from "philia/protocol/type";
+import type { Project as Impl } from "#impl.js";
+export type IAPI = API.API & API.IAPI<API.OICQ>;
+export default class ICQQtoPhilia implements IAPI {
+  impl: Impl;
+  constructor(impl: Impl);
+  getVersion(): {
+    impl: {
+      id: string;
+      name: string;
+      version: string;
+    };
+    proto: icqq.Apk;
+  };
+  receiveEvent({ event }: API.Req<"receiveEvent">, client?: Parameters<typeof this.impl.event_handle.receive>[1]): void;
+  unreceiveEvent({ event }: API.Req<"unreceiveEvent">, client?: Parameters<typeof this.impl.event_handle.unreceive>[1]): void;
+  getSelfInfo(): {
+    id: string;
+    name: string;
+    avatar: string;
+  };
+  setSelfInfo({ data }: API.Req<"setSelfInfo">): Promise<void>;
+  _convertUserInfo(res: {
+    user_id: number;
+    nickname: string;
+  }): Contact.User;
+  getUserInfo({ id }: API.Req<"getUserInfo">): Promise<Contact.User>;
+  _convertGroupInfo(res: icqq.GroupInfo): Contact.Group;
+  getGroupInfo({ id, refresh }: API.Req<"getGroupInfo">): Promise<Contact.Group>;
+  _convertGroupMemberInfo(res: icqq.MemberInfo): Contact.GroupMember;
+  getGroupMemberInfo({ id, uid, refresh }: API.Req<"getGroupMemberInfo">): Promise<Contact.GroupMember>;
+  setInfo({ scene, id, data }: API.Req<"setInfo">): Promise<void>;
+  setGroupMemberInfo({ id, uid, data }: API.Req<"setGroupMemberInfo">): Promise<void>;
+  delUser({ id, block }: API.Req<"delUser">): Promise<void>;
+  delGroup({ id, dismiss }: API.Req<"delGroup">): Promise<void>;
+  delGroupMember({ id, uid, block }: API.Req<"delGroupMember">): Promise<void>;
+  sendMsg({ scene, id, data }: API.Req<"sendMsg">): Promise<Message.RSendMsg>;
+  sendMultiMsg({ scene, id, data }: API.Req<"sendMultiMsg">): Promise<Message.RSendMsg[]>;
+  _sendFile({ scene, id, data }: API.Req<"_sendFile">): Promise<string>;
+  getMsg({ id }: API.Req<"getMsg">): Promise<Event.UserMessage | Event.GroupMessage>;
+  delMsg({ id }: API.Req<"delMsg">): Promise<void>;
+  sendMsgForward({ scene, id, mid }: API.Req<"sendMsgForward">): Promise<Message.RSendMsg>;
+  getFile({ id }: API.Req<"getFile">): Message.URLFile;
+  getChatHistory({ type, id, count, newer }: API.Req<"getChatHistory">): Promise<(Event.UserMessage | Event.GroupMessage)[]>;
+  getUserList({ refresh }?: API.Req<"getUserList">): Promise<string[]>;
+  getUserArray({ refresh }?: API.Req<"getUserArray">): Promise<Contact.User[]>;
+  getGroupList({ refresh }?: API.Req<"getGroupList">): Promise<string[]>;
+  getGroupArray({ refresh }?: API.Req<"getGroupArray">): Promise<Contact.Group[]>;
+  getGroupMemberList({ id, refresh }: API.Req<"getGroupMemberList">): Promise<string[]>;
+  getGroupMemberArray({ id, refresh }: API.Req<"getGroupMemberArray">): Promise<Contact.GroupMember[]>;
+  getRequestArray({ scene, count }?: API.Req<"getRequestArray">): Promise<Event.Request[]>;
+  setRequest({ id, result, reason }: API.Req<"setRequest">): Promise<void>;
+  uploadCacheFile(): string;
+  clearCache(): void;
+  getForwardMsg({ id }: API.Req<"getForwardMsg">): Promise<Message.Forward[]>;
+  sendPoke({ scene, id, tid }: API.Req<"sendPoke">): Promise<void>;
+  getGroupAnnounceList(): never[];
+  sendGroupAnnounce({ id, content }: API.Req<"sendGroupAnnounce">): Promise<void>;
+  delGroupAnnounce(): void;
+  writeUni(args: API.Req<"writeUni">): any;
+  sendOidb(args: API.Req<"sendOidb">): any;
+  sendPacket(args: API.Req<"sendPacket">): any;
+  sendUni(args: API.Req<"sendUni">): any;
+  sendOidbSvcTrpcTcp(args: API.Req<"sendOidbSvcTrpcTcp">): any;
+  getRoamingStamp({ refresh }?: API.Req<"getRoamingStamp">): Promise<string[]>;
+  delRoamingStamp({ id }: API.Req<"delRoamingStamp">): Promise<void>;
+  setUserClass({ name, id }: API.Req<"setUserClass">): Promise<void>;
+  addUserClass({ name }: API.Req<"addUserClass">): Promise<void>;
+  delUserClass({ name }: API.Req<"delUserClass">): Promise<void>;
+  renameUserClass({ name, new_name }: API.Req<"renameUserClass">): Promise<void>;
+  getImageOCR({ image }: API.Req<"getImageOCR">): Promise<icqq.OcrResult>;
+  getSelfCookie({ domain }?: API.Req<"getSelfCookie">): string | {
+    [k: string]: string;
+  };
+  getSelfCSRFToken(): number;
+  sendUserLike({ id, times }: API.Req<"sendUserLike">): Promise<void>;
+  addUserBack({ id, seq, remark }: API.Req<"addUserBack">): Promise<void>;
+  searchUserSameGroup({ id }: API.Req<"searchUserSameGroup">): Promise<any>;
+  getGroupFSDf({ id }: API.Req<"getGroupFSDf">): Promise<{
+    total: number;
+    used: number;
+    free: number;
+  } & {
+    file_count: number;
+    max_file_count: number;
+  }>;
+  getGroupFSStat({ id, fid }: API.Req<"getGroupFSStat">): Promise<icqq.GfsFileStat | icqq.GfsDirStat>;
+  getGroupFSDir({ id, pid, start, limit }: API.Req<"getGroupFSDir">): Promise<(icqq.GfsFileStat | icqq.GfsDirStat)[]>;
+  addGroupFSDir({ id, name }: API.Req<"addGroupFSDir">): Promise<icqq.GfsDirStat>;
+  delGroupFSFile({ id, fid }: API.Req<"delGroupFSFile">): Promise<void>;
+  renameGroupFSFile({ id, fid, name }: API.Req<"renameGroupFSFile">): Promise<void>;
+  moveGroupFSFile({ id, fid, pid }: API.Req<"moveGroupFSFile">): Promise<void>;
+  uploadGroupFSFile({ id, file, pid, name }: API.Req<"uploadGroupFSFile">): Promise<icqq.GfsFileStat>;
+  forwardGroupFSFile({ id, fid, pid, name }: API.Req<"forwardGroupFSFile">): Promise<icqq.GfsFileStat>;
+  getGroupFSFile({ id, fid }: API.Req<"getGroupFSFile">): Promise<Omit<icqq.FileElem, "type"> & {
+    url: string;
+  }>;
+  addGroupEssence({ id, seq, rand }: API.Req<"addGroupEssence">): Promise<void>;
+  delGroupEssence({ id, seq, rand }: API.Req<"delGroupEssence">): Promise<void>;
+  setReaded({ id, seq, time }: API.Req<"setReaded">): Promise<void>;
+  setMessageRate({ id, times }: API.Req<"setMessageRate">): any;
+  setGroupJoinType({ id, type, question, answer }: API.Req<"setGroupJoinType">): Promise<void>;
+  getGroupAtAllRemainder({ id }: API.Req<"getGroupAtAllRemainder">): Promise<number>;
+  sendGroupUserInvite({ id, uid }: API.Req<"sendGroupUserInvite">): Promise<void>;
+  sendGroupSign({ id }: API.Req<"sendGroupSign">): Promise<void>;
+  _getReactionType(data: API.Req<"setReaction"> | API.Req<"delReaction">): Promise<void>;
+  setReaction(data: API.Req<"setReaction">): Promise<any>;
+  delReaction(data: API.Req<"delReaction">): Promise<any>;
+}
