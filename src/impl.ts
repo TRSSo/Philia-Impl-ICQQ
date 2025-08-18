@@ -38,7 +38,7 @@ export class Project extends Common.Project {
     const config = {
       name,
       config: {},
-      philia: await Philia.Project.createConfig(),
+      philia: await Philia.Project.createConfig("App"),
       slider: "https://GT.928100.xyz/captcha/slider",
     } as IConfig
     await Project.editConfig(config)
