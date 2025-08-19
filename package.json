@@ -12,13 +12,6 @@
     "minify": "node ../../mod/minify lib",
     "build": "pnpm lint && { pnpm compile; pnpm minify; }"
   },
-  "devDependencies": {
-    "@biomejs/biome": "^2.2.0",
-    "@types/node": "^24.3.0",
-    "oxc-minify": "^0.82.1",
-    "oxlint": "^1.11.2",
-    "typescript": "^5.9.2"
-  },
   "dependencies": {
     "icqq": "*",
     "philia": "workspace:^"
