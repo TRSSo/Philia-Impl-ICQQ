@@ -5,7 +5,6 @@
   "license": "LGPL-3.0",
   "author": "TimeRainStarSky",
   "type": "module",
-  "main": "lib/main.js",
   "scripts": {
     "lint": "oxlint -c ../../.oxlintrc.json --fix src && biome check --write src",
     "compile": "rm -rf lib/* && tsc",
@@ -19,11 +18,5 @@
   "imports": {
     "#*": "./lib/*/index.js",
     "#*.js": "./lib/*.js"
-  },
-  "exports": {
-    ".": "./lib/index.js",
-    "./*": "./lib/*/index.js",
-    "./*.js": "./lib/*.js",
-    "./package.json": "./package.json"
   }
 }
