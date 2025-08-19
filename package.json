@@ -6,7 +6,7 @@
   "author": "TimeRainStarSky",
   "type": "module",
   "scripts": {
-    "lint": "oxlint -c ../../.oxlintrc.json --fix src && biome check --write src",
+    "lint": "biome check --write src",
     "compile": "rm -rf lib/* && tsc",
     "minify": "node ../../mod/minify lib",
     "build": "pnpm lint && { pnpm compile; pnpm minify; }"
