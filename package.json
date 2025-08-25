@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "lint": "biome check --write src",
-    "compile": "rm -rf lib/* && tsc",
+    "compile": "node -e \"fs.rmSync('lib',{recursive:true,force:true})\" && tsc",
     "minify": "node ../../mod/minify lib",
     "build": "pnpm lint && { pnpm compile; pnpm minify; }"
   },
