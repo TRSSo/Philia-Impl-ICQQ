@@ -15,7 +15,7 @@ export default class ICQQtoPhilia implements EventMap {
   "system.login.auth"(event: EventParam<"system.login.auth">): void;
   "system.login.error"(event: EventParam<"system.login.error">): void;
   "system.offline"(event: EventParam<"system.offline">): Promise<void> | Promise<PromiseSettledResult<void>[]>;
-  "system.online"(): Promise<PromiseSettledResult<void>[]> | Promise<import("../../../../lib/connect/socket/server.js").Server> | Promise<import("../../../../lib/connect/websocket/server.js").Server>;
+  "system.online"(): Promise<PromiseSettledResult<void>[]> | Promise<import("../../../../lib/connect/socket/server.js").Server> | Promise<import("../../../../lib/connect/websocket/server.js").Server> | undefined;
   PrivateMessage(data: icqq.PrivateMessage): Promise<Philia.Event.UserMessage>;
   "message.private"(event: EventParam<"message.private">): Promise<void>;
   GroupMessage(data: icqq.GroupMessage): Promise<Philia.Event.GroupMessage>;
