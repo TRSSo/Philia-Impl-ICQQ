@@ -18,5 +18,11 @@
   "imports": {
     "#*": "./lib/*/index.js",
     "#*.js": "./lib/*.js"
+  },
+  "exports": {
+    ".": "./lib/index.js",
+    "./*": "./lib/*/index.js",
+    "./*.js": "./lib/*.js",
+    "./package.json": "./package.json"
   }
 }
