@@ -2,7 +2,9 @@ name: Build and Publish TypeDoc
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+      - dev
   workflow_dispatch:
 
 permissions:
@@ -41,10 +43,11 @@ jobs:
 
     # 5. 推送到 docs 分支
     - name: Push to docs branch
+      if: github.ref == 'refs/heads/main'
       run: |
         cd plugin/example
-        git config --global user.name "GitHub Actions Bot"
-        git config --global user.email "actions@users.noreply.github.com"
+        git config --global user.name 'GitHub Actions Bot'
+        git config --global user.email 'actions@users.noreply.github.com'
         git checkout docs || git checkout --orphan docs
         cd temp
         mv ../.git .

@@ -186,7 +186,7 @@ export default class ICQQtoPhilia implements EventMap {
   }
 
   "system.offline"(event: EventParam<"system.offline">) {
-    this.impl.manager.notice.set("账号下线", event.message)
+    this.impl.manager.notice.set("账号下线", event?.message || "账号下线")
     return this.impl.philia.stop()
   }
 

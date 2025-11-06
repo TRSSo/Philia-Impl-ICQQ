@@ -26,13 +26,14 @@ export const ExtendArray: MessageExtend["type"][] = [
   "node",
   "forum",
   "flash",
+  "bubble",
   "json",
   "xml",
   "poke",
   "location",
   "share",
-  "music",
   "long_msg",
+  "multimsg",
 ]
 
 /** 消息转换器 */
@@ -112,9 +113,9 @@ export class ICQQtoPhilia {
     this.after.push({
       raw: ms as unknown as undefined,
       type: "file",
-      id: ms.fid,
+      id: ms.fid ?? (ms.file as string),
       data: "id",
-      name: ms.name,
+      name: ms.name ?? (ms.file as string),
     })
     this.summary += `[文件: ${ms.name}(${ms.fid})]`
   }
@@ -123,7 +124,7 @@ export class ICQQtoPhilia {
     this.after.push({
       raw: ms as unknown as undefined,
       type: "image",
-      id: String(ms.fid || ms.file),
+      id: String(ms.fid ?? ms.file),
       name: ms.file as string,
       data: "url",
       url: ms.url!,
@@ -135,7 +136,7 @@ export class ICQQtoPhilia {
     this.after.push({
       raw: ms as unknown as undefined,
       type: "voice",
-      id: String(ms.fid || ms.file),
+      id: ms.fid ?? (ms.file as string),
       name: ms.file as string,
       data: "url",
       url: ms.url!,
@@ -147,7 +148,7 @@ export class ICQQtoPhilia {
     this.after.push({
       raw: ms as unknown as undefined,
       type: "video",
-      id: String(ms.fid || ms.file),
+      id: ms.fid ?? (ms.file as string),
       name: ms.file as string,
       data: "id",
     })

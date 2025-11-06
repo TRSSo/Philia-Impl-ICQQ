@@ -490,11 +490,15 @@ export default class ICQQtoPhilia implements IAPI {
   async setReaction(data: API.Req<"setReaction">) {
     if (data.type === "message") await this._getReactionType(data)
     if (data.type === "group")
-      return this.impl.client.pickGroup(+data.id).setReaction(data.seq!, data.eid, data.etype)
+      return this.impl.client
+        .pickGroup(+data.id)
+        .setReaction(data.seq!, data.eid, data.etype) as unknown as void
   }
   async delReaction(data: API.Req<"delReaction">) {
     if (data.type === "message") await this._getReactionType(data)
     if (data.type === "group")
-      return this.impl.client.pickGroup(+data.id).delReaction(data.seq!, data.eid, data.etype)
+      return this.impl.client
+        .pickGroup(+data.id)
+        .delReaction(data.seq!, data.eid, data.etype) as unknown as void
   }
 }
